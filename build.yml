@@ -1,0 +1,42 @@
+name: Build Develop Branch
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - name: Code Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: App 1 npm install
+      run: npm install
+      working-directory: angular-app-1
+    - name: App 1 Build
+      run: npm run build:staging
+      working-directory: angular-app-1
+    - name: App 2 npm install
+      run: npm install
+      working-directory: angular-app-2
+    - name: App 2 Build
+      run: node node_modules/@angular/cli/bin/ng build --configuration=staging
+      working-directory: angular-app-2
+    - name: App 3 npm install
+      run: npm install
+      working-directory: angular-app-3
+    - name: App 3 Build
+      run: node node_modules/@angular/cli/bin/ng build --configuration=staging
+      working-directory: angular-app-3
