@@ -1,4 +1,4 @@
-name: Build Develop Branch
+name: Build Dev Branch
 
 on:
   push:
